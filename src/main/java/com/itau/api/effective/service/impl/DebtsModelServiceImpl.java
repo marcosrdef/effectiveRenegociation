@@ -1,7 +1,6 @@
 package com.itau.api.effective.service.impl;
 
-import com.itau.api.effective.dto.DebtsRequestDTO;
-import com.itau.api.effective.dto.SimulateRequestDTO;
+import com.itau.api.effective.dto.SimulationRequestDTO;
 import com.itau.api.effective.model.DebtModel;
 import com.itau.api.effective.repository.DebtsModelRepository;
 import com.itau.api.effective.service.DebtsModelService;
@@ -20,7 +19,7 @@ public class DebtsModelServiceImpl implements DebtsModelService {
     }
 
     @Override
-    public Optional<List<DebtModel>> findDebtsByDocument(SimulateRequestDTO simulateRequest) {
+    public Optional<List<DebtModel>> findDebtsByDocument(SimulationRequestDTO simulateRequest) {
         return debtsModelRepository.findByDocumentId(simulateRequest.getDocumentId());
     }
 }

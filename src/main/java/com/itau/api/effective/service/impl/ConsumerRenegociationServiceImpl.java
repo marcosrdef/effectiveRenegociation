@@ -5,6 +5,7 @@ import com.itau.api.effective.factory.EffectiveRenegociationFactory;
 import com.itau.api.effective.factory.SimulationFactory;
 import com.itau.api.effective.model.EffectiveRenegociationModel;
 import com.itau.api.effective.model.SimulationModel;
+import com.itau.api.effective.service.ConsumerRenegociationService;
 import com.itau.api.effective.service.EffectiveRenegociationService;
 import com.itau.api.effective.service.SimulationService;
 import org.apache.kafka.clients.producer.Producer;
@@ -19,9 +20,9 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ConsumerRenegociationServiceImpl {
+public class ConsumerRenegociationServiceImpl implements ConsumerRenegociationService {
 
-    private final Logger logger = LoggerFactory.getLogger(Producer.class);
+    private final Logger logger = LoggerFactory.getLogger(ConsumerRenegociationServiceImpl.class);
     private final SimulationService simulationService;
     private final SimulationFactory simulationFactory;
     private final EffectiveRenegociationService effectiveRenegociationService;
@@ -37,8 +38,9 @@ public class ConsumerRenegociationServiceImpl {
         this.effectiveRenegociationFactory = effectiveRenegociationFactory;
     }
 
+    @Override
     @KafkaListener(topics = {"simulacaoRenegociacao"})
-    public void consumerSimulacao(final @Payload String message,
+    public void consumerSimulation(final @Payload String message,
                                   final @Header(KafkaHeaders.OFFSET) Integer offset,
                                   final @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
                                   final @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,
@@ -50,8 +52,10 @@ public class ConsumerRenegociationServiceImpl {
         logger.info("#### simulation processed -> %s", lstModels);
     }
 
+
+    @Override
     @KafkaListener(topics = {"efetivarRenegociacao"})
-    public void consumerEfetivacao(final @Payload String message,
+    public void consumerEfetivation(final @Payload String message,
                                    final @Header(KafkaHeaders.OFFSET) Integer offset,
                                    final @Header(KafkaHeaders.RECEIVED_MESSAGE_KEY) String key,
                                    final @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition,

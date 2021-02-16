@@ -1,9 +1,8 @@
 package com.itau.api.effective.service.impl;
 
 import com.itau.api.effective.constants.Constants;
-import com.itau.api.effective.dto.SimulateRequestDTO;
+import com.itau.api.effective.dto.SimulationRequestDTO;
 import com.itau.api.effective.model.DebtModel;
-import com.itau.api.effective.model.EffectiveRenegociationModel;
 import com.itau.api.effective.model.SimulationModel;
 import com.itau.api.effective.repository.SimulationModelRepository;
 import com.itau.api.effective.service.SimulationModelService;
@@ -25,17 +24,17 @@ public class SimulationModelServiceImpl implements SimulationModelService {
         this.simulationModelRepository = simulationModelRepository;
     }
     @Override
-    public Optional<List<SimulationModel>> findByDocumentId(SimulateRequestDTO simulateRequest) {
+    public Optional<List<SimulationModel>> findByDocumentId(SimulationRequestDTO simulateRequest) {
         return this.simulationModelRepository.findByDocumentId(simulateRequest.getDocumentId());
     }
 
     @Override
-    public Optional<List<SimulationModel>> findByGroupSimulationId(SimulateRequestDTO simulateRequest) {
+    public Optional<List<SimulationModel>> findByGroupSimulationId(SimulationRequestDTO simulateRequest) {
         return this.simulationModelRepository.findByGroupSimulationId(simulateRequest.getGroupSimulationId());
     }
 
     @Override
-    public List<SimulationModel> generate(SimulateRequestDTO simulateRequest, List<DebtModel> lstModel) throws ParseException {
+    public List<SimulationModel> generate(SimulationRequestDTO simulateRequest, List<DebtModel> lstModel) throws ParseException {
         return saveAll(simulateRequest,lstModel);
     }
 
@@ -45,7 +44,7 @@ public class SimulationModelServiceImpl implements SimulationModelService {
     }
 
 
-    private List<SimulationModel> saveAll(SimulateRequestDTO simulateRequest, List<DebtModel> lstDebits) throws ParseException {
+    private List<SimulationModel> saveAll(SimulationRequestDTO simulateRequest, List<DebtModel> lstDebits) throws ParseException {
         List<SimulationModel> lstSimulationModel = new ArrayList<>();
         String valor = Utils.sumDebits(lstDebits);
         List<String> idDebits = lstDebits.stream().map(x -> x.getId()).collect(Collectors.toList());
@@ -57,11 +56,11 @@ public class SimulationModelServiceImpl implements SimulationModelService {
         return (List<SimulationModel>) this.simulationModelRepository.saveAll(lstSimulationModel);
     }
 
-    private SimulationModel simulate(SimulateRequestDTO simulateRequest
-            ,String value
-            ,String plots
-            ,String percent
-            ,List<String> idDebits) throws ParseException {
+    private SimulationModel simulate(SimulationRequestDTO simulateRequest
+            , String value
+            , String plots
+            , String percent
+            , List<String> idDebits) throws ParseException {
         String discountValue = Utils.calculateValueWithDiscount(value, percent);
         return SimulationModel.builder()
                 .groupSimulationId(simulateRequest.getGroupSimulationId())

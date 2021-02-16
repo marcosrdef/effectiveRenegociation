@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class SimulateRequestDTO {
+public class SimulationRequestDTO {
     private String groupSimulationId;
     private String documentId;
     private String simulateId;
