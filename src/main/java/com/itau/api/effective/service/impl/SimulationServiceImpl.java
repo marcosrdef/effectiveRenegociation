@@ -35,16 +35,18 @@ public class SimulationServiceImpl implements SimulationService {
 
     @Override
     public SimulationResponseDTO findByDocumentId(SimulationRequestDTO simulateRequest) {
-        List<DebtModel> debts = null;
+        List<SimulationModel> lstSimulationModel = findItensSimulation(simulateRequest, TypeSearchEnum.ID);
         return simulationFactory.convertListSimulationModelToSimulationResponse(
-                findItensSimulation(simulateRequest, TypeSearchEnum.ID, debts), debts);
+                lstSimulationModel,
+                listDebts(simulateRequest, lstSimulationModel));
     }
 
     @Override
     public SimulationResponseDTO findByGroupSimulationId(SimulationRequestDTO simulateRequest) {
-        List<DebtModel> debts = null;
+        List<SimulationModel> lstSimulationModel = findItensSimulation(simulateRequest, TypeSearchEnum.GROUP_SIMULATION_ID);
         return simulationFactory.convertListSimulationModelToSimulationResponse(
-                findItensSimulation(simulateRequest, TypeSearchEnum.GROUP_SIMULATION_ID, debts), debts);
+                lstSimulationModel,
+                listDebts(simulateRequest, lstSimulationModel));
     }
 
     @Override
@@ -53,7 +55,7 @@ public class SimulationServiceImpl implements SimulationService {
     }
 
     private List<SimulationModel> findItensSimulation(SimulationRequestDTO simulateRequest
-            ,TypeSearchEnum typeSearchEnum, List<DebtModel> debts) {
+            ,TypeSearchEnum typeSearchEnum) {
         Optional<List<SimulationModel>> lstSimulation = typeSearchEnum.ID.equals(typeSearchEnum) ?
                 this.simulationModelService.findByDocumentId(simulateRequest) :
                 this.simulationModelService.findByGroupSimulationId(simulateRequest);;
@@ -61,11 +63,13 @@ public class SimulationServiceImpl implements SimulationService {
             throw new NotFoundException(String.format(Constants.MSG_NOT_FOUND_SIMULATION));
         }
 
-        simulateRequest.setDocumentId(ObjectUtils.isEmpty(simulateRequest.getDocumentId())?
-                lstSimulation.get().stream().findFirst().get().getDocumentId(): simulateRequest.getDocumentId());
-        debts = this.debtsModelService.findDebtsByDocument(simulateRequest).get();
-
         return lstSimulation.get();
+    }
+
+    private List<DebtModel> listDebts(SimulationRequestDTO simulateRequest, List<SimulationModel> lstSimulationModel) {
+        simulateRequest.setDocumentId(ObjectUtils.isEmpty(simulateRequest.getDocumentId())?
+                lstSimulationModel.stream().findFirst().get().getDocumentId(): simulateRequest.getDocumentId());
+        return this.debtsModelService.findDebtsByDocument(simulateRequest).get();
     }
 
     private List<SimulationModel> simulate(SimulationRequestDTO simulateRequest) throws Exception {

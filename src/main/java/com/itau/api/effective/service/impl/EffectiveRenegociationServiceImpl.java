@@ -53,7 +53,6 @@ public class EffectiveRenegociationServiceImpl implements EffectiveRenegociation
     @Override
     public EffectiveResponseDTO findByTransactionId(EffectiveRequestDTO effectiveRequest) {
         EffectiveRenegociationModel effectiveRenegociationModel = validatedEffectiveItem(effectiveRequest);
-        getDebts(effectiveRenegociationModel);
         return effectiveRenegociationFactory.convertEffectiveModelToEffectiveResponse(effectiveRenegociationModel,
                 getDebts(effectiveRenegociationModel));
     }
@@ -123,7 +122,7 @@ public class EffectiveRenegociationServiceImpl implements EffectiveRenegociation
             throw new NotFoundException(String.format(Constants.MSG_NOT_FOUND_DEBTS));
         }
         List<DebtModel> lstDebtsFiltered = lstDebts.get().stream()
-                .filter(x-> simulationModel.get().getIdDebts().equals(x.getId())).collect(Collectors.toList());
+                .filter(x-> simulationModel.get().getIdDebts().contains(x.getId())).collect(Collectors.toList());
         if (lstDebtsFiltered.size() == 0) {
             throw new NotFoundException(String.format(Constants.MSG_NOT_FOUND_DEBTS));
         }
