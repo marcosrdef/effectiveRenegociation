@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "29f92701-ceec-4225-9d6a-b8edf6510a04",
+		"name": "effectiveRenegociation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "renegociation consultation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"transactionId\": \"{{trocar_por_id_da_transacao_retornada_na_solicitacao_de_renegociacao}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8091/renegociation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"renegociation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "simulation renegociation",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"groupSimulationId\": \"{{trocar_por_id_do_grupo_de_simulacao_retornada_na_solicitacao_da_simulacao}}\",\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8091/simulations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8091",
+					"path": [
+						"simulations"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
