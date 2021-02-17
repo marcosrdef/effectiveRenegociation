@@ -40,7 +40,7 @@ public class EffectiveRenegociationServiceImpl implements EffectiveRenegociation
 
     @Override
     public EffectiveRenegociationModel effective(EffectiveRequestDTO effectiveRequest) {
-        return this.processRenegociation(
+        return processRenegociation(
                 effectiveRequest,
                 initRenegociation(effectiveRequest));
     }

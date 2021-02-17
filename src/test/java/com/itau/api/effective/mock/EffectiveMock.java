@@ -58,4 +58,22 @@ public class EffectiveMock {
                 .transactionId("c4b5dd52-168e-414d-a482-58f92931bf3a")
                 .build();
     }
+
+    public static List<EffectiveRenegociationModel> getLstEffectiveModel() {
+        List<EffectiveRenegociationModel> lstEffectiveModel = new ArrayList<>();
+        lstEffectiveModel.add(getEffectiveModel());
+        return lstEffectiveModel;
+    }
+
+    public static String getMessageEffective() {
+        return "{\n" +
+                "    \"transactionId\": \"f260bb85-c16e-4893-9f18-4bc198aa56d7\",\n" +
+                "    \"date\": \"Wed Feb 17 13:55:44 BRT 2021\",\n" +
+                "    \"message\": \"Processando solicitação\",\n" +
+                "    \"documentId\": \"12768334073\",\n" +
+                "    \"simulationId\": \"b50cec5f-19d8-46e9-80b7-355003038d9c\",\n" +
+                "    \"groupSimulationId\": \"df46fa98-0a06-44c3-95ea-01a06f822ec6\"\n" +
+                "}";
+    }
+
 }
