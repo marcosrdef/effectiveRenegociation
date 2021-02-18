@@ -1,0 +1,250 @@
+openapi: 3.0.0
+info:
+  description: api responsável por fazer buscar das simulações e renegociações geradas para o cliente
+  title: API effectiveRenegociation
+  version: 1;2021-02-18
+  contact:
+    email: marcosrdef@gmail.com
+servers:
+  - url: 'http://localhost:8091'
+tags:
+  - name: effective-renegociation
+    description: effective renegociation
+paths:
+  /simulations:
+    post:
+      operationId: simulations
+      summary: 'consulta as simulações de renegociação feitas para o cliente'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SimulationRequestDTO'
+        required: true
+      tags:
+        - effective-renegociation
+      responses:
+        '200':
+          description: retorna uma lista com itens simulados para renegociação
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SimulationResponseDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+  /renegociation:
+    post:
+      operationId: renegociation
+      summary: 'consulta a renegociação do cliente'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EffectiveRequestDTO'
+        required: true
+      tags:
+        - effective-renegociation
+      responses:
+        '200':
+          description: retorna a renegociação feita pela cliente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EffectiveResponseDTO'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorDTO'
+                
+components:
+  schemas:
+    SimulationRequestDTO :
+      type: object
+      properties:
+        groupSimulationId:
+          type: string
+          description: id do grupo da simulação, gerado no response da api de renegociação (renegociation, endpoint request simulation)
+          example: 'df496d4e-0adc-4ae6-8114-5031496aab13'
+    EffectiveRequestDTO:
+      type: object
+      properties:
+        transactionId:
+          type: string
+          description: id da transação da renegociação, gerado no response da api de renegociação (renegociation, endpoint request renegociation)
+          example: 'df496d4e-0adc-4ae6-8114-5031496aab13'
+    SimulationResponseDTO:
+      type: object
+      properties:
+        simulations:
+          type: array
+          description: Lista de itens simulados para renegociação
+          items:
+            $ref: '#/components/schemas/SimulationItemDTO'
+    SimulationItemDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id da simulação
+          example: '9be182be-37ba-4d29-981e-c5ba9dbb5555'
+        date:
+          type: string
+          description: data da simulação
+          example: '2021-02-17T23:00:59.286Z'
+        originalValue:
+          type: string
+          description: valor original da dívida
+          example: '10120,10'
+        valueWithDiscount:
+          type: string
+          description: valor efetivo da cobrança
+          example: '5566,05'
+        discountedValue:
+          type: string
+          description: valor do desconto
+          example: '4554,05'
+        discountPercentage:
+          type: string
+          description: percentual de desconto
+          example: '45'
+        plots:
+          type: string
+          description: número de parcelas
+          example: '2'
+        installmentValue:
+          type: string
+          description: valor da parcela
+          example: '2783,02'
+        documentId:
+          type: string
+          description: cpf do cliente
+          example: '12768334073'
+        idDebts:
+          type: array
+          description: Lista de débitos
+          items:
+            $ref: '#/components/schemas/DebtDTO'
+        status:
+          type: string
+          description: status da simulação
+          example: 'Efetivado'
+        groupSimulationId:
+          type: string
+          description: id do grupo da simulação
+          example: '794cb547-74de-45ca-b87b-c7cd2dba8a54'
+        currency:
+          type: string
+          description: tipo de moeda
+          example: 'R$'
+    EffectiveResponseDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id gerado na renegociação
+          example: '9be182be-37ba-4d29-981e-c5ba9dbb5555'
+        documentId:
+          type: string
+          description: cpf do cliente
+          example: '12768334073'
+        transactionId:
+          type: string
+          description: id da transação 
+          example: 'df496d4e-0adc-4ae6-8114-5031496aab13'
+        originalValue:
+          type: string
+          description: valor original da dívida
+          example: '10120,10'
+        discountPercentage:
+          type: string
+          description: percentual de desconto
+          example: '45'
+        discountedValue:
+          type: string
+          description: valor do desconto
+          example: '4554,05'
+        effectiveValue:
+          type: string
+          description: valor efetivo da cobrança
+          example: '5566,05'
+        date:
+          type: string
+          description: data da renegociação efetuada
+          example: '2021-02-17T23:00:59.286Z'
+        plots:
+          type: string
+          description: número de parcelas
+          example: '2'
+        installmentValue:
+          type: string
+          description: valor da parcela
+          example: '2783,02'
+        status:
+          type: string
+          description: status da renegociação
+          example: 'Efetivado'
+        simulationId:
+          type: string
+          description: id do item da simulação selecionado
+          example: 'e20faa70-98a5-47f5-b9f6-788deb182935'
+        currency:
+          type: string
+          description: tipo de moeda
+          example: 'R$'
+        debts:
+          type: array
+          description: Lista de débitos
+          items:
+            $ref: '#/components/schemas/DebtDTO'
+    DebtDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          description: id do débito
+          example: 'c0dad3a-f288-48cf-a802-b1a06b7bd695'
+        currentValue:
+          type: string
+          description: valor atual do débito
+          example: '10000,00'
+        originalValue:
+          type: string
+          description: valor original do débito
+          example: '1540,00'
+        currency:
+          type: string
+          description: tipo de moeda
+          example: 'R$'
+    ErrorDTO:
+      type: object
+      properties:
+        message:
+          type: string
+          description: mensagem do erro
+          example: 'Not Found'
+        statusCode:
+          type: string
+          description: código do erro
+          example: '404'
+        description:
+          type: string
+          description: descrição do erro
+          example: 'Transaction Not Found'

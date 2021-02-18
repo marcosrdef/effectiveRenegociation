@@ -16,7 +16,7 @@ os containers do docker devem estar rodando (local) para utilização do dynamoD
 de renegociação e a consulta da efetivação da renegociação
 
 endpoint: http://localhost:8091/simulations
-Verbo: GET
+Verbo: POST
 
 recurso: simulation renegociation
 
@@ -148,7 +148,7 @@ exemplo de response:
 }
 
 endpoint: http://localhost:8091/renegociation
-Verbo: GET
+Verbo: POST
 
 recurso: renegociation consultation
 
