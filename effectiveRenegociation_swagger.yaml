@@ -12,7 +12,7 @@ tags:
     description: effective renegociation
 paths:
   /simulations:
-    post:
+    get:
       operationId: simulations
       summary: 'consulta as simulações de renegociação feitas para o cliente'
       requestBody:
@@ -43,7 +43,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorDTO'
   /renegociation:
-    post:
+    get:
       operationId: renegociation
       summary: 'consulta a renegociação do cliente'
       requestBody:
